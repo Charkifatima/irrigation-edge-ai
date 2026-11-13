@@ -4,51 +4,37 @@ Prévision des besoins en irrigation par IA à l’edge — projet Master IA et 
 
 ## État du projet
 
-Le socle Python et les conventions Git ont été livrés avec [TMGROUP-9](https://dataopsfsa.atlassian.net/browse/TMGROUP-9).
+Le socle Python et le simulateur CPU sont disponibles sur `main`. Le simulateur produit 20 mesures synthétiques JSONL. La V0.1 intégrée vise à publier ces 20 mesures dans Kafka, les lire avec le consumer ETL et les stocker dans PostgreSQL. Ces services restent à intégrer.
 
-[TMGROUP-10](https://dataopsfsa.atlassian.net/browse/TMGROUP-10) ajoute un environnement Docker de développement et un simulateur CPU de capteurs. La simulation produit des mesures synthétiques ; elle ne réalise ni prédiction IA ni commande d’irrigation. Kafka, PostgreSQL, Airflow, le Model Registry, l’API et le dashboard restent à intégrer.
+- [Diagrammes et contrat de données](docs/architecture.md)
+- [Décisions d’architecture sur Confluence](https://dataopsfsa.atlassian.net/wiki/spaces/IRRIG/pages/5570561)
 
-## Démarrer avec Docker
+## Démo locale sur un PC de 8 Go
 
-Suivre [le guide Docker et simulation edge](docs/DOCKER.md) pour les prérequis, les tests et les preuves à fournir pour la revue.
+Prérequis Docker sous Ubuntu · Git, Docker Engine démarré et Docker Compose v2. Le premier build demande Internet. La démo utilise le CPU et des données synthétiques.
 
 ```bash
+git clone https://github.com/Charkifatima/irrigation-edge-ai.git
+cd irrigation-edge-ai
 docker compose config -q
 docker compose build dev
 docker compose run --rm dev python -m unittest discover -s tests -v
 docker compose run --rm edge-sim
 ```
 
-Le simulateur affiche 20 mesures JSON puis s’arrête. Chaque service est limité à 256 Mio et 1 CPU ; l’usage réel sur le PC cible reste à mesurer.
+Résultat attendu · six tests réussis, puis 20 lignes JSON et arrêt automatique. Chaque service est plafonné à 256 Mio et 1 CPU. Exécuter les commandes successivement pour limiter la charge. Les services centraux seront lancés selon l’étape de démonstration. Pour la future V0.1, seuls Kafka, PostgreSQL et le consumer seront nécessaires en plus du producteur. Le [guide Docker](docs/DOCKER.md) détaille la capture JSONL et la configuration pour Docker Snap.
 
-## Prérequis
+### Exécution avec Python
 
-- Git
-- Python 3.11 ou supérieur, avec `pip` et `venv`
-- Pour ce socle : aucun GPU, Docker ou service externe nécessaire
-
-## Installation sous Ubuntu
+Utiliser Python 3.11 ou supérieur avec `pip` et `venv`. Sous Ubuntu, installer le paquet `python3-venv` correspondant si `ensurepip` manque. Depuis la racine du dépôt cloné :
 
 ```bash
-git clone https://github.com/Charkifatima/irrigation-edge-ai.git
-cd irrigation-edge-ai
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
-```
-
-Si la création du venv indique que `ensurepip` est absent, installer le paquet `python3-venv` correspondant à son Python avant de réessayer.
-
-Pour essayer TMGROUP-10 avant sa fusion, sélectionner `feature/TMGROUP-10-docker-simulation-edge` après le clonage et avant l’installation.
-
-## Vérification
-
-```bash
-python -m irrigation_edge_ai
 python -m unittest discover -s tests -v
+python -m irrigation_edge_ai.simulator --count 20 --seed 42 --interval 0
 ```
-
-La première commande affiche `Irrigation Edge AI : environnement Python opérationnel.` ; la seconde doit terminer par `OK` avec six tests exécutés sur la branche TMGROUP-10. Ces tests valident le démarrage du package et le simulateur, pas une prévision d’irrigation.
 
 ## Organisation
 
