@@ -1,0 +1,14 @@
+# Seuls les fichiers requis pour l'image sont envoyés au moteur Docker.
+**
+!Dockerfile
+!.dockerignore
+!pyproject.toml
+!README.md
+!src/
+!src/**
+!tests/
+!tests/**
+**/__pycache__/
+**/*.pyc
+**/.env
+**/.env.*

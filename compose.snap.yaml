@@ -1,0 +1,7 @@
+# Complément explicite pour les hôtes Docker Snap qui refusent no-new-privileges.
+# Utiliser avec compose.yaml ; les autres protections restent héritées.
+services:
+  dev:
+    security_opt: !reset []
+  edge-sim:
+    security_opt: !reset []
