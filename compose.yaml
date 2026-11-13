@@ -2,7 +2,8 @@ x-runtime: &runtime
   build:
     context: .
   image: irrigation-edge-ai:dev
-  init: true
+  # Python est lancé directement : pas de binaire docker-init injecté.
+  init: false
   mem_limit: 256m
   cpus: 1.0
   pids_limit: 64
