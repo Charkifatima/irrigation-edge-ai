@@ -31,6 +31,26 @@ git switch feature/TMGROUP-10-docker-simulation-edge
 
 Après fusion de la PR, travailler depuis `main` à jour.
 
+## Compatibilité Docker Snap
+
+Sur le PC cible, Python démarre avec `docker run --rm irrigation-edge-ai:dev python --version`, mais échoue avec `--security-opt no-new-privileges:true`. Le build a réussi ; l'exécution complète et les tests restent à valider après ce contournement.
+
+Pour ce cas, utiliser le complément `compose.snap.yaml` : il retire uniquement l'option `no-new-privileges` des deux services. L'utilisateur non root, les capacités supprimées, le système de fichiers en lecture seule et les limites CPU/RAM restent appliqués. AppArmor n'est pas désactivé et aucun mode privilégié n'est ajouté. La configuration standard conserve `no-new-privileges` pour les autres machines.
+
+Dans le terminal Ubuntu utilisé pour ce projet :
+
+```bash
+export COMPOSE_FILE=compose.yaml:compose.snap.yaml
+docker compose config -q
+docker compose run --rm dev
+docker compose run --rm dev python -m unittest discover -s tests -v
+docker compose run --rm edge-sim
+```
+
+Cette sélection s'applique au terminal courant : refaire l'export dans chaque nouveau terminal pour le projet. Pour revenir à la configuration standard : `unset COMPOSE_FILE`. Aucune reconstruction de l'image n'est nécessaire pour cette modification Compose.
+
+Le tag `!reset []` retire la liste héritée au lieu de lui ajouter des valeurs : https://docs.docker.com/reference/compose-file/merge/#reset-value
+
 ## Construire et valider
 
 À la racine du dépôt :
