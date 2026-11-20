@@ -1,0 +1,1 @@
+date,parcel_id,latitude,longitude,region,crop,growth_stage,soil_type,soil_moisture,temperature_mean_c,temperature_max_c,temperature_min_c,relative_humidity_pct,wind_speed_ms,solar_radiation_mj_m2,rainfall_mm,ET0_mm_day,Kc,ETc_mm_day,root_zone_depletion_mm,net_irrigation_requirement_mm,label_method,data_source
