@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'irrigation-python'
+    }
 
     options {
         skipDefaultCheckout(true)
