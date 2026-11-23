@@ -124,6 +124,36 @@ Les éléments suivants doivent être validés :
 - Valeurs de Kc et profondeurs racinaires selon les cultures.
 - Traitement de la pluie efficace et des pertes.
 
+## 9. Nature et disponibilité des labels
+
+Deux types de labels sont envisagés :
+
+### 9.1 Labels mesurés
+
+Ils correspondent aux besoins ou aux volumes d'irrigation issus de mesures réelles sur les parcelles.
+
+Disponibilité actuelle : non identifiés.
+
+### 9.2 Labels calculés
+
+Ils seront estimés à partir du bilan hydrique de la zone racinaire selon la méthode FAO-56.
+
+Les calculs nécessitent notamment :
+- ET0 et ETc.
+- Les précipitations efficaces.
+- Le déficit hydrique initial.
+- Les propriétés hydriques du sol.
+- La profondeur racinaire.
+- Le seuil de déficit hydrique autorisé.
+
+Ces labels seront considérés comme des estimations agronomiques et devront être validés.
+
+## 10. Statut
+
+Version : V0.1
+
+Statut : variable cible proposée. Méthode de construction des labels définie conceptuellement. Données nécessaires et paramètres agronomiques restant à valider.
+
 ## 9. Statut
 
 Version : V0.1
