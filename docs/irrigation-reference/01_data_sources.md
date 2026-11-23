@@ -84,6 +84,42 @@ Licence : vérifier la licence exacte et les conditions de réutilisation sur la
 
 FAO-56 est une référence méthodologique et non un dataset de mesures journalières pour les parcelles marocaines.
 
+### 2.5 Dataset agro-météorologique – Région Oriental (Maroc)
+
+- Source : [Mendeley Data – Quality-controlled and gap-filled daily agro-meteorological dataset](https://data.mendeley.com/datasets/fncyjvrdnp/1)
+- DOI : https://doi.org/10.17632/fncyjvrdnp.1
+- Auteurs : Mohammed Berrahal et Noureddine Boussala.
+- Zone géographique : région Oriental, nord-est du Maroc.
+- Stations : 10 stations météorologiques automatiques.
+- Période : du 5 décembre 2018 au 3 mars 2026.
+- Nombre d'enregistrements dans le dataset original : 15 924 station-jours.
+- Licence : CC BY 4.0.
+
+Variables disponibles :
+- Température moyenne, maximale et minimale.
+- Humidité relative moyenne, maximale et minimale.
+- Rayonnement solaire.
+- Vitesse moyenne et maximale du vent.
+- Précipitations.
+- Évapotranspiration de référence (ET0), calculée selon FAO-56 Penman-Monteith et Hargreaves-Samani.
+
+Utilisation dans le projet :
+- Disposer de données météorologiques provenant de stations situées dans des zones agricoles marocaines.
+- Étudier les conditions climatiques de la région Oriental.
+- Alimenter les calculs d'ET0 et l'estimation des besoins en eau des cultures.
+- Comparer les données de stations avec les données de réanalyse d'Open-Meteo.
+
+Préparation réalisée :
+- Le fichier `observations_meteo_reelles_oriental.csv` a été intégré au dépôt GitHub.
+- Un sous-ensemble a été préparé à partir du fichier original en conservant les indicateurs de qualité (`qc`), la provenance des valeurs (`src`) et les incertitudes (`unc`).
+
+Limites :
+- Les données concernent uniquement la région Oriental.
+- Le dataset est contrôlé et complété : certaines valeurs sont reconstruites et ne sont donc pas des observations directes.
+- Les indicateurs `qc` et `src` doivent être consultés avant toute utilisation.
+- L'ET0 fournie est une valeur calculée et non une mesure directe.
+- Le dataset ne contient pas les volumes d'irrigation réellement appliqués aux parcelles ni les labels réels des besoins en irrigation.
+
 ## 3. Tableau récapitulatif
 
 | Source | Variables principales | Fréquence | Utilisation |
@@ -92,6 +128,7 @@ FAO-56 est une référence méthodologique et non un dataset de mesures journali
 | SoilGrids | Texture et propriétés du sol | Statique | Contexte du sol |
 | Dataset marocain | Culture, parcelle, irrigation | Par observation/saison | Identification des parcelles |
 | FAO-56 | Kc, ET0, ETc, bilan hydrique | Selon le calcul | Construction des références |
+| Dataset agro-météorologique Oriental | Météo, précipitations, ET0 | Journalière | Données météorologiques de stations |
 
 ## 4. Points restant à vérifier
 
@@ -106,4 +143,4 @@ FAO-56 est une référence méthodologique et non un dataset de mesures journali
 
 Version : V0.1
 
-Statut : sources candidates identifiées, téléchargement et validation des données à effectuer.
+Statut : sources candidates identifiées. Un dataset agro-météorologique réel de la région Oriental a été téléchargé, préparé et intégré au dépôt GitHub. La validation des labels d'irrigation reste à réaliser.
