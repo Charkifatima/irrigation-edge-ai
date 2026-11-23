@@ -7,6 +7,7 @@ Prévision des besoins en irrigation par IA à l’edge — projet Master IA et 
 Le socle Python et le simulateur CPU sont disponibles sur `main`. Le simulateur produit 20 mesures synthétiques JSONL. La V0.1 intégrée vise à publier ces 20 mesures dans Kafka, les lire avec le consumer ETL et les stocker dans PostgreSQL. Ces services restent à intégrer.
 
 - [Diagrammes et contrat de données](docs/architecture.md)
+- [CI Jenkins : Ruff et Pytest](docs/JENKINS_CI.md)
 - [Décisions d’architecture sur Confluence](https://dataopsfsa.atlassian.net/wiki/spaces/IRRIG/pages/5570561)
 
 ## Démo locale sur un PC de 8 Go
@@ -44,6 +45,7 @@ python -m irrigation_edge_ai.simulator --count 20 --seed 42 --interval 0
 | `tests/` | Tests automatisés |
 | `data/` | Règles de gestion et dossiers de données locales |
 | `docs/CONTRIBUTING.md` | Conventions de branches, commits et revues |
+| `docs/JENKINS_CI.md` | Configuration de la CI Jenkins et intégration GitHub |
 | `.github/pull_request_template.md` | Modèle commun de Pull Request |
 | `pyproject.toml` | Métadonnées et installation du package |
 | `.gitignore` | Exclusion des environnements, secrets et données générées |
