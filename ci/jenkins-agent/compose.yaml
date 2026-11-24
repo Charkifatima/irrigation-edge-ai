@@ -1,0 +1,51 @@
+services:
+  python-agent:
+    image: irrigation-jenkins-python-agent:3.11.18
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - KILL
+      - SETGID
+      - SETUID
+      - SYS_CHROOT
+    tmpfs:
+      - /run:size=16m,mode=0755
+      - /tmp:size=32m,mode=1777
+      - /home/ci/agent:size=384m,uid=10001,gid=10001,mode=0750,exec
+    volumes:
+      - ssh_host_keys:/var/lib/jenkins-agent/hostkeys
+      - ./.secrets/authorized_keys:/run/secrets/authorized_keys:ro
+    networks:
+      jenkins:
+        aliases:
+          - irrigation-ci-agent
+    healthcheck:
+      test:
+        - CMD
+        - python3.11
+        - -c
+        - "import socket; socket.create_connection(('127.0.0.1', 2222), 3).close()"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  ssh_host_keys:
+    name: irrigation-jenkins-agent-hostkeys
+
+networks:
+  jenkins:
+    external: true
+    name: ${JENKINS_DOCKER_NETWORK:-dataopstest_default}

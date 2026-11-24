@@ -158,6 +158,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+ci/jenkins-agent/.secrets/
 
 # Spyder project settings
 .spyderproject

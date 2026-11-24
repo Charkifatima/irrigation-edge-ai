@@ -33,9 +33,15 @@ Après fusion de la PR, travailler depuis `main` à jour.
 
 ## Compatibilité Docker Snap
 
-Sur le PC cible, Python démarre avec `docker run --rm irrigation-edge-ai:dev python --version`, mais échoue avec `--security-opt no-new-privileges:true`. Le build a réussi ; l'exécution complète et les tests restent à valider après ce contournement.
+### État de la machine auditée le 23 novembre 2026
 
-Pour ce cas, utiliser le complément `compose.snap.yaml` : il retire uniquement l'option `no-new-privileges` des deux services. L'utilisateur non root, les capacités supprimées, le système de fichiers en lecture seule et les limites CPU/RAM restent appliqués. AppArmor n'est pas désactivé et aucun mode privilégié n'est ajouté. La configuration standard conserve `no-new-privileges` pour les autres machines.
+La commande `docker` résout vers `/usr/bin/docker`. Docker Engine 29.9.3 est le moteur actif, sur le contexte `default`, avec ses données sous `/var/lib/docker`. Un seul processus `dockerd` est actif. Le paquet Docker Snap 29.8.0 (révision 3618) est encore installé mais désactivé ; son service est inactif. Son ancien répertoire de données existe encore sous `/var/snap/docker/common/var-lib-docker` et n’a pas été modifié.
+
+La migration est donc effective pour l’usage courant (Docker Engine), mais le paquet et les anciennes données Snap n’ont pas été supprimés. Aucune désinstallation ni migration de volumes n’a été effectuée. Sur le moteur Engine courant, `docker compose -f compose.yaml config --quiet` réussit et l’image applicative passe les six tests avec `no-new-privileges:true`. Le contournement décrit ci-dessous reste conservé pour les autres membres utilisant un hôte Docker Snap ; il n’est pas requis par le moteur Engine actif sur cette machine.
+
+### Contournement pour un hôte Docker Snap
+
+Une erreur avait été observée sur un ancien environnement Snap lorsque Python était lancé avec `--security-opt no-new-privileges:true`. Pour reproduire ce cas sur un hôte Snap, utiliser le complément `compose.snap.yaml` : il retire uniquement cette option des deux services. L'utilisateur non root, les capacités supprimées, le système de fichiers en lecture seule et les limites CPU/RAM restent appliqués. AppArmor n'est pas désactivé et aucun mode privilégié n'est ajouté. La configuration standard conserve `no-new-privileges` pour les autres machines.
 
 Dans le terminal Ubuntu utilisé pour ce projet :
 
