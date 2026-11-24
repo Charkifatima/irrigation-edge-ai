@@ -1,0 +1,68 @@
+
+## Infrastructure DataOps : Kafka et PostgreSQL
+
+### Architecture
+
+Le système utilise Kafka pour transporter les mesures des capteurs
+et PostgreSQL pour les stocker.
+
+Flux de données :
+
+Python Producer → Kafka → Python Consumer → PostgreSQL
+
+### Services
+
+- PostgreSQL 16 : stockage des mesures.
+- Apache Kafka 3.9.1 : transport des messages.
+- SQLAlchemy : interaction avec PostgreSQL.
+- Alembic : gestion des migrations.
+- kafka-python : communication avec Kafka.
+
+### Démarrage
+
+Démarrer PostgreSQL et Kafka :
+
+```bash
+docker compose up -d postgres kafka
+```
+
+### Topic Kafka
+
+Topic utilisé :
+
+`irrigation-measurements`
+
+### Initialisation
+
+Créer la parcelle et le capteur :
+
+```bash
+docker compose run --rm dev python -m irrigation_edge_ai.seed
+```
+
+### Lancement du Consumer
+
+Dans un premier terminal :
+
+```bash
+docker compose run --rm dev python -m irrigation_edge_ai.consumer
+```
+
+### Envoi de mesures simulées
+
+Dans un deuxième terminal :
+
+```bash
+docker compose run --rm dev python -m irrigation_edge_ai.producer --count 20
+```
+
+### Vérification PostgreSQL
+
+```sql
+SELECT COUNT(*) FROM measurements;
+
+SELECT *
+FROM measurements
+ORDER BY id DESC
+LIMIT 20;
+```
